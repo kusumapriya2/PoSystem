@@ -20,7 +20,7 @@ public class CustomerDto {
 
     @NotBlank(message = "Customer email cannot be blank")
     @Email(message = "Invalid email format")
-    private String customerEmail;
+    private String email;
 
     @NotBlank(message = "Customer phone cannot be blank")
     @Pattern(
@@ -30,4 +30,5 @@ public class CustomerDto {
     private String customerPhone;
     private String customerAddress;
     private List<Long> orderIds;
+
 }

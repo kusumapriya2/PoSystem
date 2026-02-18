@@ -5,17 +5,25 @@ import com.example.service.InvoiceService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/invoice")
 public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse<String>> createInvoice(@Valid @RequestBody InvoiceDTO invoiceDTO) {
+    public ResponseEntity<ApiResponse<InvoiceDTO>> createInvoice(@Valid @RequestBody InvoiceDTO invoiceDTO) {
         return invoiceService.createInvoice(invoiceDTO);
+    }
+    @PutMapping("/updateInvoiceById/{invoiceId}")
+    public ResponseEntity<ApiResponse<InvoiceDTO>> updateInvoiceById(@RequestBody InvoiceDTO invoiceDTO, @PathVariable("invoiceId") Long invoiceId) {
+        return invoiceService.updateInvoiceById(invoiceDTO,invoiceId);
+    }
+    @GetMapping("/getAllInvoices")
+    public ResponseEntity<ApiResponse<List<InvoiceDTO>>> getAllInvoices(){
+        return invoiceService.getAllInvoices();
     }
 }

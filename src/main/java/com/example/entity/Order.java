@@ -63,7 +63,7 @@ public class Order {
         PAID,
         COMPLETED,
         CANCELLED,
-        PENDING
+        DELIVERED, PENDING
     }
   @ManyToOne
     @JoinColumn(name="customer_id")

@@ -9,6 +9,7 @@ import com.example.repository.OrderRepo;
 import com.example.repository.ProductRepo;
 import com.example.repository.VendorRepo;
 import com.example.response.ApiResponse;
+import com.example.utils.EmailTemplates;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,9 @@ public class OrderService {
 
     @Autowired
     private ProductRepo productRepo;
+
+    @Autowired
+    private EmailService emailService;
 
     public ResponseEntity<ApiResponse<OrderDto>> createOrders(OrderDto dto) {
         try {
@@ -140,6 +144,12 @@ public class OrderService {
             }
 
             Order saved = orderRepo.save(order);
+
+            emailService.sendEmail(
+                    saved.getCustomer().getEmail(),
+                    "Order Placed - " + saved.getPoNumber(),
+                    EmailTemplates.orderPlaced(saved)
+            );
             return ResponseEntity.ok(ApiResponse.success("Order created", orderMapper.toDto(saved)));
 
         } catch (Exception e) {

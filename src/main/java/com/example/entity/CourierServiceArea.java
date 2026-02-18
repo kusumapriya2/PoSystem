@@ -12,9 +12,5 @@ public class CourierServiceArea {
     @ManyToOne
     @JoinColumn(name = "courier_courier_id")
     private Courier courier;
-
     private Long pincode;
-
-
-
 }

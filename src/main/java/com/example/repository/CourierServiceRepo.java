@@ -27,4 +27,6 @@ public interface CourierServiceRepo extends JpaRepository<CourierServiceArea, Lo
     default List<Courier> findActiveCouriersByPincode(Long pincode) {
         return findCouriersByPincodeAndStatus(pincode, Courier.Status.ACTIVE);
     }
+
+    List<CourierServiceArea> findByPincode(Long pincode);
 }
