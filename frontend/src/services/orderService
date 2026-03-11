@@ -1,0 +1,23 @@
+import axios from "axios";
+
+const BASE_URL = "http://localhost:8080/orders";
+
+export const getAllOrders = () => {
+  return axios.get(`${BASE_URL}/getAllOrders`);
+};
+
+export const createOrder = (orderData) => {
+  return axios.post(`${BASE_URL}/createOrder`, orderData);
+};
+
+export const getOrderById = (id) => {
+  return axios.get(`${BASE_URL}/getOrderById/${id}`);
+};
+
+export const updateOrder = (id, orderData) => {
+  return axios.put(`${BASE_URL}/updateOrder/${id}`, orderData);
+};
+
+export const deleteOrder = (id) => {
+  return axios.delete(`${BASE_URL}/deleteOrder/${id}`);
+};

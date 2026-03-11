@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { getAllVendors, saveVendor, deleteVendor } from "../services/vendorService";
+import {
+  getAllVendors,
+  createVendor,
+  deleteVendor
+} from "../services/vendorService";
 
 function VendorPage() {
   const [vendors, setVendors] = useState([]);
   const [message, setMessage] = useState("");
 
-  const [vendorData, setVendorData] = useState({
+  const [formData, setFormData] = useState({
     vendorName: "",
-    email: "",
-    phone: "",
-    address: ""
+    vendorEmail: "",
+    gstNo: "",
+    vendorPhone: ""
   });
 
   const loadVendors = async () => {
@@ -18,7 +22,7 @@ function VendorPage() {
       const response = await getAllVendors();
       setVendors(response.data.data || []);
     } catch (error) {
-      console.error("Error fetching vendors:", error);
+      console.error("Error loading vendors:", error);
       setMessage("Failed to load vendors");
     }
   };
@@ -29,8 +33,9 @@ function VendorPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setVendorData({
-      ...vendorData,
+
+    setFormData({
+      ...formData,
       [name]: value
     });
   };
@@ -39,38 +44,42 @@ function VendorPage() {
     e.preventDefault();
 
     try {
-      const response = await saveVendor(vendorData);
-      setMessage(response.data.message || "Vendor saved successfully");
+      const response = await createVendor(formData);
+      setMessage(response.data.message || "Vendor created successfully");
 
-      setVendorData({
+      setFormData({
         vendorName: "",
-        email: "",
-        phone: "",
-        address: ""
+        vendorEmail: "",
+        gstNo: "",
+        vendorPhone: ""
       });
 
       loadVendors();
     } catch (error) {
-      console.error("Error saving vendor:", error);
-      setMessage("Failed to save vendor");
+      console.error("Error creating vendor:", error);
+      setMessage(
+        error?.response?.data?.message || "Failed to create vendor"
+      );
     }
   };
 
   const handleDelete = async (vendorId) => {
     try {
-      await deleteVendor(vendorId);
-      setMessage("Vendor deleted successfully");
+      const response = await deleteVendor(vendorId);
+      setMessage(response.data.message || "Vendor deleted successfully");
       loadVendors();
     } catch (error) {
       console.error("Error deleting vendor:", error);
-      setMessage("Failed to delete vendor");
+      setMessage(
+        error?.response?.data?.message || "Failed to delete vendor"
+      );
     }
   };
 
   return (
     <Layout
       title="Vendor Management"
-      subtitle="Add and manage vendor details for purchase orders"
+      subtitle="Add and manage vendor details"
       buttonText="Add Vendor"
     >
       {message && (
@@ -93,45 +102,45 @@ function VendorPage() {
                     name="vendorName"
                     className="form-control"
                     placeholder="Enter vendor name"
-                    value={vendorData.vendorName}
+                    value={formData.vendorName}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">Email</label>
+                  <label className="form-label">Vendor Email</label>
                   <input
                     type="email"
-                    name="email"
+                    name="vendorEmail"
                     className="form-control"
                     placeholder="Enter vendor email"
-                    value={vendorData.email}
+                    value={formData.vendorEmail}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">Phone</label>
+                  <label className="form-label">GST Number</label>
                   <input
                     type="text"
-                    name="phone"
+                    name="gstNo"
                     className="form-control"
-                    placeholder="Enter vendor phone"
-                    value={vendorData.phone}
+                    placeholder="Enter GST number"
+                    value={formData.gstNo}
                     onChange={handleChange}
                   />
                 </div>
 
                 <div className="mb-3">
-                  <label className="form-label">Address</label>
-                  <textarea
-                    name="address"
+                  <label className="form-label">Vendor Phone</label>
+                  <input
+                    type="text"
+                    name="vendorPhone"
                     className="form-control"
-                    rows="3"
-                    placeholder="Enter vendor address"
-                    value={vendorData.address}
+                    placeholder="Enter vendor phone"
+                    value={formData.vendorPhone}
                     onChange={handleChange}
-                  ></textarea>
+                  />
                 </div>
 
                 <button type="submit" className="btn btn-success w-100">
@@ -150,11 +159,11 @@ function VendorPage() {
               <table className="table table-bordered table-hover">
                 <thead className="table-dark">
                   <tr>
-                    <th>ID</th>
+                    <th>Vendor ID</th>
                     <th>Vendor Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Address</th>
+                    <th>Vendor Email</th>
+                    <th>GST No</th>
+                    <th>Vendor Phone</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -164,11 +173,12 @@ function VendorPage() {
                       <tr key={vendor.vendorId}>
                         <td>{vendor.vendorId}</td>
                         <td>{vendor.vendorName}</td>
-                        <td>{vendor.email}</td>
-                        <td>{vendor.phone}</td>
-                        <td>{vendor.address}</td>
+                        <td>{vendor.vendorEmail}</td>
+                        <td>{vendor.gstNo}</td>
+                        <td>{vendor.vendorPhone}</td>
                         <td>
                           <button
+                            type="button"
                             className="btn btn-danger btn-sm"
                             onClick={() => handleDelete(vendor.vendorId)}
                           >
@@ -203,14 +213,14 @@ function VendorPage() {
 
                 <div className="col-md-4">
                   <div className="summary-box">
-                    <h6>Active Vendors</h6>
+                    <h6>Visible Vendors</h6>
                     <h3>{vendors.length}</h3>
                   </div>
                 </div>
 
                 <div className="col-md-4">
                   <div className="summary-box">
-                    <h6>Latest Added</h6>
+                    <h6>Latest Session Add</h6>
                     <h3>{vendors.length > 0 ? 1 : 0}</h3>
                   </div>
                 </div>

@@ -6,8 +6,12 @@ export const getAllVendors = () => {
   return axios.get(`${BASE_URL}/allVendors`);
 };
 
-export const saveVendor = (vendorData) => {
+export const createVendor = (vendorData) => {
   return axios.post(`${BASE_URL}/create`, vendorData);
+};
+
+export const deleteVendor = (vendorId) => {
+  return axios.delete(`${BASE_URL}/delete/${vendorId}`);
 };
 
 export const getVendorById = (vendorId) => {
@@ -16,8 +20,4 @@ export const getVendorById = (vendorId) => {
 
 export const updateVendor = (id, vendorData) => {
   return axios.put(`${BASE_URL}/update/${id}`, vendorData);
-};
-
-export const deleteVendor = (vendorId) => {
-  return axios.delete(`${BASE_URL}/delete/${vendorId}`);
 };
