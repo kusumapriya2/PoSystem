@@ -13,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/courierService")
+@CrossOrigin(origins = "http://localhost:3000")
 public class CourierServiceController {
 
     private final CourierServiceAreaService courierServiceAreaService;

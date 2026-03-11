@@ -1,0 +1,58 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f4f6f9;
+}
+
+.payment-page {
+  min-height: 100vh;
+}
+
+.sidebar {
+  min-height: 100vh;
+  background-color: #1f2d3d;
+}
+
+.sidebar .nav-link {
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #32475b;
+}
+
+.active-menu {
+  background-color: #32475b;
+}
+
+.main-content {
+  background-color: #f8f9fa;
+}
+
+.top-section {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+}
+
+.summary-box {
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+}
+
+.activity-list {
+  padding-left: 18px;
+}
+
+.activity-list li {
+  margin-bottom: 10px;
+}

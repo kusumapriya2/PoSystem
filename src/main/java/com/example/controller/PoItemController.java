@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/poItems")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PoItemController {
     @Autowired PoItemService poItemService;
     @GetMapping("/getPoItems")
